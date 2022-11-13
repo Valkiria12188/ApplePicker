@@ -12,9 +12,14 @@ public class TreeController : MonoBehaviour
     float leftCorner = -8.0f;
     float rightCorner = 8.0f;
 
+    [Header("Apple Settings")]
+    public GameObject applePrefab;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        InvokeRepeating("ThrowAnApple", 3f, 1f);
     }
     void Update()
     {
@@ -32,19 +37,10 @@ public class TreeController : MonoBehaviour
             randomSpeed();
             speed = -Mathf.Abs(speed);
         }
-        Debug.Log(speed);
 
-        //direction = Random.Range(-1, 2);
-        InvokeRepeating("ThrowAnApple", 10f, 10f);
+      
     }
 
-    float randomSpeed()
-    {
-        speed = Random.Range(3.0f, 10.0f);
-        return speed;
-    }
-
-    // Update is called once per frame
     private void FixedUpdate()
     {
         if (Random.value < changeRotation)
@@ -53,13 +49,17 @@ public class TreeController : MonoBehaviour
             speed *= -1;
         }
     }
-
+    float randomSpeed()
+    {
+        speed = Random.Range(3.0f, 10.0f);
+        return speed;
+    }
     void ThrowAnApple()
     {
-        time += Time.deltaTime;
-        int clock = (int)time;
-        //Debug.Log(clock);
-        //Debug.Log("Throw apple");
-        //Debug.Log(Time.time);
+        Vector3 applePosition = transform.position;
+        applePosition.y = 1.4f;
+        
+        GameObject clone = Instantiate(applePrefab, applePosition, Quaternion.identity);
+        Destroy(clone, 4f);
     }
 }
